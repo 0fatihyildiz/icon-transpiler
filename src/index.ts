@@ -16,7 +16,7 @@ const argv = cli({
             'transpile-iconify ./path/to/icons/**/*.svg --output=icons.json --prefix=iconify',
         ],
         usage: 'transpile-iconify <svg-path> [options]',
-        version: '0.0.1',
+        version: '0.0.2',
     },
 
     flags: {
