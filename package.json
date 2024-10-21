@@ -16,6 +16,9 @@
       "default": "./dist/index.mjs"
     }
   },
+  "bin": {
+    "transpile-iconify": "./dist/index.cjs"
+  },
   "scripts": {
     "start": "pnpm tsx ./src/index.ts",
     "build": "pnpm exec pkgroll"
