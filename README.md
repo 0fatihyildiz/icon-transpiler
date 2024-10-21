@@ -2,18 +2,10 @@
 
 Transpile Iconify is a command-line tool that transforms SVG files into JSON format for use with Iconify.
 
-## Installation
-
-To install the dependencies, run:
-
-```bash
-npm install glob xml2js cleye
-```
-
 ## Usage
 
 ```bash
-node transpile-iconify.js <svg-path> [options]
+transpile-iconify <svg-path> [options]
 ```
 
 ### Parameters
