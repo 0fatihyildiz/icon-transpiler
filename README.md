@@ -20,9 +20,9 @@ transpile-iconify <svg-path> [options]
 ### Examples
 
 ```bash
-node transpile-iconify.js ./path/to/icons/**/*.svg
-node transpile-iconify.js ./path/to/icons/**/*.svg --output=icons.json
-node transpile-iconify.js ./path/to/icons/**/*.svg --output=icons.json --prefix=iconify
+transpile-iconify ./path/to/icons/**/*.svg
+transpile-iconify ./path/to/icons/**/*.svg --output=icons.json
+transpile-iconify ./path/to/icons/**/*.svg --output=icons.json --prefix=iconify
 ```
 
 ## How It Works
