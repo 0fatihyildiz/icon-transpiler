@@ -5,7 +5,7 @@ Transpile Iconify is a command-line tool that transforms SVG files into JSON for
 ## Usage
 
 ```bash
-transpile-iconify <svg-path> [options]
+npx transpile-iconify "<svg-path>" [options]
 ```
 
 ### Parameters
@@ -20,9 +20,9 @@ transpile-iconify <svg-path> [options]
 ### Examples
 
 ```bash
-transpile-iconify ./path/to/icons/**/*.svg
-transpile-iconify ./path/to/icons/**/*.svg --output=icons.json
-transpile-iconify ./path/to/icons/**/*.svg --output=icons.json --prefix=iconify
+npx transpile-iconify "./path/to/icons/**/*.svg"
+npx transpile-iconify "./path/to/icons/**/*.svg" --output=icons.json
+npx transpile-iconify "./path/to/icons/**/*.svg" --output=icons.json --prefix=iconify
 ```
 
 ## How It Works
