@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import type { IconSetOptions } from './types.ts';
 import { cli } from 'cleye';
 import * as fs from 'node:fs';
