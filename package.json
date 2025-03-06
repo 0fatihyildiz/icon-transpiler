@@ -1,6 +1,6 @@
 {
-  "name": "iconify-transpiler",
-  "version": "0.1.0",
+  "name": "iconify-transpile",
+  "version": "0.1.1",
   "description": "Transform SVG files into JSON format for Iconify",
   "author": "0fatihyildiz",
   "main": "dist/index.js",
@@ -18,7 +18,7 @@
     }
   },
   "bin": {
-    "transpile-iconify": "./dist/index.js"
+    "iconify-transpile": "./dist/index.js"
   },
   "scripts": {
     "start": "node dist/index.js",

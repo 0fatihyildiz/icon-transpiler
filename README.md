@@ -1,4 +1,4 @@
-# Iconify Transpiler
+# Iconify Transpile
 
 A powerful tool for converting SVG icons to Iconify JSON format with advanced features like icon cleanup and optimization.
 
@@ -14,10 +14,10 @@ A powerful tool for converting SVG icons to Iconify JSON format with advanced fe
 
 ```bash
 # Install globally
-npm install -g iconify-transpiler
+npm install -g iconify-transpile
 
 # Or run with npx
-npx iconify-transpiler
+npx iconify-transpile
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ transpile-iconify --config=iconify.config.js
 
 ### Options
 
-- `--config`: Path to configuration file (default: 'iconify.config.js')
+- `--config`: Path to configuration file (default: 'iconify.config.json')
 
 ## Configuration File
 

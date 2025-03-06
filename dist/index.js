@@ -18,7 +18,7 @@ const argv = cli({
         config: {
             type: String,
             description: 'Configuration file path',
-            default: 'iconify.config.js',
+            default: 'iconify.config.json',
         },
     }
 });
