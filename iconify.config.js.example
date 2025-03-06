@@ -1,0 +1,20 @@
+module.exports = [
+  {
+    sourceDir: './path/to/icons',
+    targetFile: './dist/icons.json',
+    prefix: 'custom-icons',
+    expectedSize: 24,
+    iconSetInfo: {
+      name: 'Custom Icon Set',
+      author: {
+        name: 'Your Name',
+        url: 'https://example.com'
+      },
+      license: {
+        title: 'MIT',
+        url: 'https://opensource.org/licenses/MIT'
+      }
+    }
+  },
+  // You can add more icon sets here
+]

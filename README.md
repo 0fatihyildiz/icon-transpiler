@@ -1,51 +1,95 @@
-# Transpile Iconify
+# Iconify Transpiler
 
-Transpile Iconify is a command-line tool that transforms SVG files into JSON format for use with Iconify.
+A powerful tool for converting SVG icons to Iconify JSON format with advanced features like icon cleanup and optimization.
+
+## Features
+
+- Convert SVG icons to Iconify JSON format
+- Clean and optimize SVG files using @iconify/tools
+- Configurable expected sizes and validation
+- Multiple icon sets processing in a single run
+- Custom prefixes for icon sets
+
+## Installation
+
+```bash
+# Install globally
+npm install -g iconify-transpiler
+
+# Or run with npx
+npx iconify-transpiler
+```
 
 ## Usage
 
 ```bash
-npx transpile-iconify "<svg-path>" [options]
+transpile-iconify --config=iconify.config.js
 ```
-
-### Parameters
-
-- `<svg-path>`: Path to the SVG files you want to transform. Supports glob patterns.
 
 ### Options
 
-- `--output`: Output JSON filename (default: 'icons.json')
-- `--prefix`: Prefix for the icons
+- `--config`: Path to configuration file (default: 'iconify.config.js')
 
-### Examples
+## Configuration File
 
-```bash
-npx transpile-iconify "./path/to/icons/**/*.svg"
-npx transpile-iconify "./path/to/icons/**/*.svg" --output=icons.json
-npx transpile-iconify "./path/to/icons/**/*.svg" --output=icons.json --prefix=iconify
+Create a JavaScript or JSON configuration file that defines your icon sets:
+
+```js
+// iconify.config.js
+module.exports = [
+  {
+    sourceDir: './path/to/icons',
+    targetFile: './dist/icons.json',
+    prefix: 'custom-icons',
+    expectedSize: 24,
+    iconSetInfo: {
+      name: 'Custom Icon Set',
+      author: {
+        name: 'Your Name',
+        url: 'https://example.com'
+      },
+      license: {
+        title: 'MIT',
+        url: 'https://opensource.org/licenses/MIT'
+      }
+    }
+  },
+  // You can add more icon sets here
+];
 ```
+
+### Configuration Options
+
+Each icon set configuration supports these properties:
+
+- `sourceDir`: Directory containing SVG icon files
+- `targetFile`: Output JSON file path
+- `prefix`: Icon set prefix used in Iconify
+- `expectedSize` (optional): Validates that icons have the expected dimensions
+- `iconSetInfo`: Metadata about the icon set (name, author, license, etc.)
 
 ## How It Works
 
-1. The script reads all SVG files from the specified path.
-2. It parses each SVG file and extracts the necessary information.
-3. The extracted data is transformed into the Iconify JSON format.
-4. The resulting JSON is written to the specified output file.
+1. The tool reads your configuration file
+2. For each icon set in the configuration:
+   - Imports SVG files from the specified directory
+   - Cleans and optimizes SVG content
+   - Validates dimensions if expectedSize is provided
+   - Converts colors to `currentColor` for proper theming
+   - Exports to Iconify JSON format
 
 ## Output Format
 
-The output JSON file will have the following structure:
+The generated JSON files follow the Iconify JSON format:
 
 ```json
 {
-  "folderName": {
-    "prefix": "folderName",
-    "icons": {
-      "iconName": {
-        "body": "<path d=\"...\" fill=\"currentColor\"/>",
-        "width": 24,
-        "height": 24
-      }
+  "prefix": "custom-icons",
+  "icons": {
+    "icon-name": {
+      "body": "<path d=\"...\" fill=\"currentColor\"/>",
+      "width": 24,
+      "height": 24
     }
   }
 }
@@ -53,8 +97,8 @@ The output JSON file will have the following structure:
 
 ## Dependencies
 
-- glob: For file pattern matching
-- xml2js: For parsing SVG files
+- @iconify/tools: For SVG cleaning and optimization
+- @iconify/types: For TypeScript type definitions
 - cleye: For command-line argument parsing
 
 ## License

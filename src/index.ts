@@ -1,79 +1,141 @@
-import { glob } from "glob";
-import * as fs from "fs";
-import * as path from "path";
-import * as xml2js from "xml2js";
-import { cli } from "cleye";
+import type { IconSetOptions } from './types.ts';
+import { cli } from 'cleye';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { 
+  cleanupSVG, 
+  importDirectory, 
+  isEmptyColor, 
+  parseColors, 
+  runSVGO 
+} from '@iconify/tools';
 
 const argv = cli({
-    name: 'transpile-iconify',
+  name: 'transpile-iconify',
 
-    parameters: ['<svg-path>'],
-    help: {
-        description: 'Transform SVG files into JSON format for Iconify',
-        examples: [
-            'transpile-iconify ./path/to/icons/**/*.svg',
-            'transpile-iconify ./path/to/icons/**/*.svg --output=icons.json',
-            'transpile-iconify ./path/to/icons/**/*.svg --output=icons.json --prefix=iconify',
-        ],
-        usage: 'transpile-iconify <svg-path> [options]',
-        version: '0.0.3',
+  parameters: [],
+  help: {
+    description: 'Transform SVG files into JSON format for Iconify',
+    examples: [
+      'transpile-iconify --config=iconify.config.js',
+      'transpile-iconify --config=iconify.config.json',
+    ],
+    usage: 'transpile-iconify [options]',
+    version: '0.1.0',
+  },
+
+  flags: {
+    config: {
+      type: String,
+      description: 'Configuration file path',
+      default: 'iconify.config.js',
     },
-
-    flags: {
-        output: {
-            type: String,
-            description: 'Output JSON filename',
-            default: 'icons.json',
-        },
-        prefix: {
-            type: String,
-            description: 'Prefix for the icons',
-        }
-    }
+  }
 });
 
-async function TransformSVG(svgPath: string, outputFilename: string, prefix?: string) {
-    const svgFiles = await glob(svgPath);
+async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
+  const {
+    sourceDir,
+    targetFile,
+    prefix,
+    expectedSize,
+    iconSetInfo,
+  } = options;
 
-    const output: Record<string, any> = {};
+  console.log(`Processing icon set: ${prefix}`);
 
-    for (const svgFilePath of svgFiles) {
-        const svgContent = await fs.promises.readFile(svgFilePath, "utf8");
+  const iconSet = await importDirectory(sourceDir, {
+    prefix,
+  });
 
-        const parser = new xml2js.Parser();
-        const result = await parser.parseStringPromise(svgContent);
+  iconSet.info = iconSetInfo;
 
-        const svgInnerContent = result.svg;
-        delete svgInnerContent.$;
-
-        const body = svgInnerContent.path?.map((p: any) => p.$).map((p: any) => `<path d="${p.d}" fill="currentColor"/>`).join('\n') || '';
-
-        const width = svgInnerContent.$?.width || 24;
-        const height = svgInnerContent.$?.height || 24;
-
-        const iconName = path.basename(svgFilePath, '.svg');
-
-        const folderName = prefix || path.basename(path.dirname(svgFilePath));
-
-        if (!output[folderName]) {
-            output[folderName] = {
-                prefix: folderName,
-                icons: {}
-            };
-        }
-
-        output[folderName].icons[iconName] = {
-            body,
-            width: parseInt(width),
-            height: parseInt(height)
-        };
+  await iconSet.forEach(async (name, type) => {
+    if (type !== 'icon') {
+      return;
     }
 
-    const outputPath = path.join(process.cwd(), outputFilename);
-    await fs.promises.writeFile(outputPath, JSON.stringify(output, null, 2), "utf8");
+    const svg = iconSet.toSVG(name);
+    if (!svg) {
+      console.warn(`Invalid SVG for icon ${name}, removing`);
+      iconSet.remove(name);
+      return;
+    }
 
-    console.log(`All SVG files have been transformed into ${outputPath}`);
+    if (expectedSize) {
+      const viewBox = svg.viewBox;
+      if (viewBox.width !== expectedSize || viewBox.height !== expectedSize) {
+        console.error(
+          `Icon ${name} has invalid dimensions: ${viewBox.width} x ${viewBox.height}`,
+        );
+        iconSet.remove(name);
+        return;
+      }
+    }
+
+    try {
+      cleanupSVG(svg);
+      parseColors(svg, {
+        defaultColor: 'currentColor',
+        callback: (_attr, colorStr, color) => {
+          return !color || isEmptyColor(color) ? 'currentColor' : colorStr;
+        },
+      });
+      runSVGO(svg);
+    }
+    catch (err) {
+      console.error(`Error parsing ${name}:`, err);
+      iconSet.remove(name);
+      return;
+    }
+
+    iconSet.fromSVG(name, svg);
+  });
+
+  const output = JSON.stringify(iconSet.export(), null, 2);
+  const dir = path.dirname(targetFile);
+  try {
+    await fs.promises.mkdir(dir, { recursive: true });
+  }
+  catch (err) {
+    console.error(`Error creating directory ${dir}:`, err);
+  }
+
+  await fs.promises.writeFile(targetFile, output, 'utf8');
+  console.log(`Saved ${targetFile} (${output.length} bytes)`);
 }
 
-TransformSVG(argv._.svgPath, argv.flags.output, argv.flags.prefix);
+async function processIconSets(options: IconSetOptions[]) {
+  for (const option of options) {
+    await convertSvgIconsToIconifyJSON(option);
+  }
+}
+
+async function main() {
+  const configPath = path.resolve(process.cwd(), argv.flags.config);
+  
+  try {
+    let config;
+    
+    if (configPath.endsWith('.js')) {
+      config = require(configPath);
+    } else {
+      const configContent = await fs.promises.readFile(configPath, 'utf8');
+      config = JSON.parse(configContent);
+    }
+    
+    if (!Array.isArray(config)) {
+      config = [config];
+    }
+    
+    await processIconSets(config);
+    console.log('All icon sets processed successfully!');
+  } catch (error) {
+    console.error(`Error loading configuration file: ${configPath}`);
+    console.error(error);
+    process.exit(1);
+  }
+}
+
+main();
 
