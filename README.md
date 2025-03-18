@@ -25,7 +25,7 @@ npx iconify-transpile
 ## Usage
 
 ```bash
-transpile-iconify --config=iconify.config.js
+iconify-transpile --config=iconify.config.js
 ```
 
 ### Options
