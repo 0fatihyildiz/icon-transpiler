@@ -1,6 +1,6 @@
 # Iconify Transpile
 
-![Coverage](https://img.shields.io/badge/coverage-89.74%25-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-92.1%25-brightgreen)
 
 A powerful tool for converting SVG icons to Iconify JSON format with advanced features like icon cleanup and optimization.
 
