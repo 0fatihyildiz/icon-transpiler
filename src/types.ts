@@ -4,6 +4,9 @@ export interface IconSetOptions {
   sourceDir: string;
   targetFile: string;
   prefix: string;
-  expectedSize?: number;
+  expectedSize?: number | {
+    width: number;
+    height: number;
+  };
   iconSetInfo: IconifyInfo;
 }

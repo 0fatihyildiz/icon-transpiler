@@ -66,12 +66,14 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
 
     if (expectedSize) {
       const viewBox = svg.viewBox;
-      if (viewBox.width !== expectedSize || viewBox.height !== expectedSize) {
-        console.error(
-          `Icon ${name} has invalid dimensions: ${viewBox.width} x ${viewBox.height}`,
-        );
-        iconSet.remove(name);
-        return;
+      if (typeof expectedSize === 'number') {
+        if (viewBox.width !== expectedSize || viewBox.height !== expectedSize) {
+          console.warn(`Icon ${name} has unexpected dimensions: ${viewBox.width} x ${viewBox.height}`);
+        }
+      } else {
+        if (viewBox.width !== expectedSize.width || viewBox.height !== expectedSize.height) {
+          console.warn(`Icon ${name} has unexpected dimensions: ${viewBox.width} x ${viewBox.height}`);
+        }
       }
     }
 
@@ -135,9 +137,15 @@ async function main() {
   } catch (error) {
     console.error(`Error loading configuration file: ${configPath}`);
     console.error(error);
-    process.exit(1);
+    throw new Error(`Configuration loading failed: ${error}`);
   }
 }
 
-main();
+// Conditionally run main() only if this module is executed directly.
+import { fileURLToPath } from 'node:url';
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main();
+}
+
+export { main, convertSvgIconsToIconifyJSON };
 

@@ -1,5 +1,7 @@
 # Iconify Transpile
 
+![Coverage](https://img.shields.io/badge/coverage-89.74%25-brightgreen)
+
 A powerful tool for converting SVG icons to Iconify JSON format with advanced features like icon cleanup and optimization.
 
 ## Features
@@ -94,6 +96,16 @@ The generated JSON files follow the Iconify JSON format:
   }
 }
 ```
+
+## Test Coverage
+
+This project uses `vitest` for testing. To generate a coverage report, run the following command:
+
+```bash
+pnpm test --coverage
+```
+
+The coverage report will be available in the `coverage/` directory. Open `coverage/index.html` in your browser to view detailed coverage information.
 
 ## Dependencies
 
