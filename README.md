@@ -102,7 +102,7 @@ The generated JSON files follow the Iconify JSON format:
 This project uses `vitest` for testing. To generate a coverage report, run the following command:
 
 ```bash
-pnpm test --coverage
+pnpm test
 ```
 
 The coverage report will be available in the `coverage/` directory. Open `coverage/index.html` in your browser to view detailed coverage information.
