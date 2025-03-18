@@ -9,4 +9,5 @@ export interface IconSetOptions {
     height: number;
   };
   iconSetInfo: IconifyInfo;
+  skipSizeValidation?: boolean;
 }

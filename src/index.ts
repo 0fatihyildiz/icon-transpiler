@@ -64,17 +64,14 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
       return;
     }
 
-    if (expectedSize) {
-      const viewBox = svg.viewBox;
-      if (typeof expectedSize === 'number') {
-        if (viewBox.width !== expectedSize || viewBox.height !== expectedSize) {
-          console.warn(`Icon ${name} has unexpected dimensions: ${viewBox.width} x ${viewBox.height}`);
-        }
-      } else {
-        if (viewBox.width !== expectedSize.width || viewBox.height !== expectedSize.height) {
-          console.warn(`Icon ${name} has unexpected dimensions: ${viewBox.width} x ${viewBox.height}`);
-        }
-      }
+    if (
+      !options.skipSizeValidation &&
+      expectedSize &&
+      (typeof expectedSize === 'number'
+        ? (svg.viewBox.width !== expectedSize || svg.viewBox.height !== expectedSize)
+        : (svg.viewBox.width !== expectedSize.width || svg.viewBox.height !== expectedSize.height))
+    ) {
+      console.warn(`Icon ${name} has unexpected dimensions: ${svg.viewBox.width} x ${svg.viewBox.height}`);
     }
 
     try {
