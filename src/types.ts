@@ -10,4 +10,5 @@ export interface IconSetOptions {
   };
   iconSetInfo: IconifyInfo;
   skipSizeValidation?: boolean;
+  debug?: boolean;
 }
