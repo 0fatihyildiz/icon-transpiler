@@ -1,0 +1,16 @@
+# Exclude test files
+tests/
+*.test.ts
+coverage/
+
+# Exclude example directory
+example/
+
+# Exclude build tools and configs
+*.log
+node_modules/
+dist/
+
+# Exclude editor and system files
+.DS_Store
+.env

@@ -1,0 +1,22 @@
+[
+  {
+    "sourceDir": "./icons",
+    "targetFile": "./exports/test.json",
+    "prefix": "custom-icons",
+    "expectedSize": {
+      "width": 58,
+      "height": 40
+    },
+    "iconSetInfo": {
+      "name": "Custom Icon Set",
+      "author": {
+        "name": "Your Name",
+        "url": "https://example.com"
+      },
+      "license": {
+        "title": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    }
+  }
+]
