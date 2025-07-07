@@ -6,7 +6,7 @@ describe('CLI', () => {
   it('should run CLI without errors', () => {
 
     try {
-      const buildOutput = execSync('pnpm build', { stdio: 'pipe' }).toString();
+      const buildOutput = execSync('npm run build', { stdio: 'pipe' }).toString();
       console.log('Build output:', buildOutput);
     } catch (error) {
       console.error('Build failed:', error.stderr?.toString() || error.message);
