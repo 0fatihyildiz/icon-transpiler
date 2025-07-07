@@ -13,7 +13,7 @@ describe('CLI', () => {
       throw new Error('Build process failed. Check the logs for details.');
     }
 
-    const output = execSync('cd example && node ../dist/index.js --help').toString();
+    const output = execSync('cd example && node ../dist/cli.js --help').toString();
     expect(output).toContain('Usage');
   });
 });

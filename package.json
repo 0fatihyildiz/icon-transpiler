@@ -18,10 +18,10 @@
     }
   },
   "bin": {
-    "iconify-transpile": "./dist/index.js"
+    "iconify-transpile": "./dist/cli.js"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/cli.js",
     "test": "vitest run --coverage",
     "test:watch": "vitest --coverage",
     "build": "tsc"
