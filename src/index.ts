@@ -4,12 +4,12 @@ import type { IconSetOptions } from './types.ts';
 import { cli } from 'cleye';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { 
-  cleanupSVG, 
-  importDirectory, 
-  isEmptyColor, 
-  parseColors, 
-  runSVGO 
+import {
+  cleanupSVG,
+  importDirectory,
+  isEmptyColor,
+  parseColors,
+  runSVGO
 } from '@iconify/tools';
 
 const argv = cli({
@@ -24,7 +24,7 @@ const argv = cli({
       'transpile-iconify --config=iconify.config.js --debug',
     ],
     usage: 'transpile-iconify [options]',
-    version: '0.1.0',
+    version: '0.1.6',
   },
 
   flags: {
@@ -65,13 +65,13 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
   const iconSet = await importDirectory(sourceDir, {
     prefix,
   });
-  
+
 
   let iconCount = 0;
   await iconSet.forEach(() => {
     iconCount++;
   });
-  
+
   debugLog(debug, `Imported ${iconCount} icons from directory`);
 
   iconSet.info = iconSetInfo;
@@ -79,7 +79,7 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
 
   await iconSet.forEach(async (name, type) => {
     debugLog(debug, `Processing icon: ${name}, type: ${type}`);
-    
+
     if (type !== 'icon') {
       debugLog(debug, `Skipping non-icon: ${name}`);
       return;
@@ -91,7 +91,7 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
       iconSet.remove(name);
       return;
     }
-    
+
     debugLog(debug, `Icon ${name} dimensions: ${svg.viewBox.width} x ${svg.viewBox.height}`);
 
     if (
@@ -108,7 +108,7 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
     try {
       debugLog(debug, `Cleaning up SVG: ${name}`);
       cleanupSVG(svg);
-      
+
       debugLog(debug, `Parsing colors for: ${name}`);
       parseColors(svg, {
         defaultColor: 'currentColor',
@@ -118,7 +118,7 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
           return result;
         },
       });
-      
+
       debugLog(debug, `Running SVGO optimization for: ${name}`);
       runSVGO(svg);
     }
@@ -135,7 +135,7 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
 
   const output = JSON.stringify(iconSet.export(), null, 2);
   debugLog(debug, `JSON output size: ${output.length} bytes`);
-  
+
   const dir = path.dirname(targetFile);
   try {
     debugLog(debug, `Creating directory: ${dir}`);
@@ -153,7 +153,7 @@ async function convertSvgIconsToIconifyJSON(options: IconSetOptions) {
 
 async function processIconSets(options: IconSetOptions[], debug: boolean) {
   debugLog(debug, `Processing ${options.length} icon sets`);
-  
+
   for (const option of options) {
 
     option.debug = option.debug ?? debug;
@@ -164,13 +164,13 @@ async function processIconSets(options: IconSetOptions[], debug: boolean) {
 async function main() {
   const configPath = path.resolve(process.cwd(), argv.flags.config);
   const debug = argv.flags.debug;
-  
+
   debugLog(debug, `Debug mode: enabled`);
   debugLog(debug, `Config path: ${configPath}`);
-  
+
   try {
     let config;
-    
+
     if (configPath.endsWith('.js')) {
       debugLog(debug, `Loading JavaScript config`);
       config = require(configPath);
@@ -180,12 +180,12 @@ async function main() {
       debugLog(debug, `Config content length: ${configContent.length} bytes`);
       config = JSON.parse(configContent);
     }
-    
+
     if (!Array.isArray(config)) {
       debugLog(debug, `Converting single config to array`);
       config = [config];
     }
-    
+
     debugLog(debug, `Found ${config.length} icon set configurations`);
     await processIconSets(config, debug);
     console.log('All icon sets processed successfully!');
