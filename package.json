@@ -1,7 +1,7 @@
 {
-  "name": "iconify-transpile",
-  "version": "0.1.6",
-  "description": "Transform SVG files into JSON format for Iconify",
+  "name": "transpile-iconify",
+  "version": "0.0.31",
+  "description": "Transpile Iconify is a command-line tool that transforms SVG files into JSON format for use with Iconify.",
   "author": "0fatihyildiz",
   "main": "dist/index.js",
   "module": "./dist/index.mjs",
@@ -18,7 +18,7 @@
     }
   },
   "bin": {
-    "iconify-transpile": "./dist/index.js"
+    "transpile-iconify": "dist/index.js"
   },
   "scripts": {
     "start": "node dist/index.js",
