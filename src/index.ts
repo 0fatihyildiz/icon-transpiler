@@ -24,7 +24,7 @@ const argv = cli({
       'transpile-iconify --config=iconify.config.js --debug',
     ],
     usage: 'transpile-iconify [options]',
-    version: '0.1.0',
+    version: '0.1.6',
   },
 
   flags: {
