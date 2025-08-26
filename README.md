@@ -1,8 +1,8 @@
-# Iconify Transpile
+# Transpile Iconify
 
 ![Coverage](https://img.shields.io/badge/coverage-92.1%25-brightgreen)
 
-A powerful tool for converting SVG icons to Iconify JSON format with advanced features like icon cleanup and optimization.
+Transpile Iconify is a command-line tool that transforms SVG files into JSON format for use with Iconify.
 
 ## Features
 
@@ -16,16 +16,16 @@ A powerful tool for converting SVG icons to Iconify JSON format with advanced fe
 
 ```bash
 # Install globally
-npm install -g iconify-transpile
+npm install -g transpile-iconify
 
 # Or run with npx
-npx iconify-transpile
+npx transpile-iconify
 ```
 
 ## Usage
 
 ```bash
-iconify-transpile --config=iconify.config.js
+transpile-iconify --config=iconify.config.js
 ```
 
 ### Options
@@ -107,12 +107,26 @@ pnpm test
 
 The coverage report will be available in the `coverage/` directory. Open `coverage/index.html` in your browser to view detailed coverage information.
 
+## Author
+
+0fatihyildiz
+
+## Keywords
+
+- svg
+- json
+- iconify
+- cli
+- transpiler
+
 ## Dependencies
 
 - @iconify/tools: For SVG cleaning and optimization
-- @iconify/types: For TypeScript type definitions
+- cheerio: HTML/XML parser and manipulator
 - cleye: For command-line argument parsing
+- glob: File pattern matching
+- xml2js: XML to JavaScript object converter
 
 ## License
 
-[MIT License](https://opensource.org/licenses/MIT)
+MIT
